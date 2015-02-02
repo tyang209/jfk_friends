@@ -1,0 +1,129 @@
+<DOCTYPE html>
+  <html>
+
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="js/jquery.csv-0.71.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <style>
+    .cast_text{
+      position: relative;
+      top: 100%;
+      margin-bottom:10px;
+      margin-top: 10px;
+
+    }
+    .show-info{
+
+      display: inline-flex;
+    }
+
+    .avatar_photo{
+
+      width:150px;
+      height:150px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 100%;
+      margin-right: 40px;
+      margin-bottom: 10px;
+      display:inline-flex;
+      position:relative;
+    }
+    .profile-wrapper{
+      padding-top: 10px;
+      padding-right: 30px;
+      padding-bottom: 10px;
+      padding-left: 10px;  
+
+    }
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript">
+
+    dataset= d3.csv("jfk_friends.csv",function(data) {
+      // myObj={}
+      // myObj['ChainNumber'] = data.Chain;
+      // myObj['ShowNumber'] = data.ShowNumber;
+      // myObj['CastNumber'] = data.CastNumber;
+      // myObj['ShowCast'] = data.Show_Cast;
+      // myObj['CastName_1'] = data.CastName_1;
+      // myObj['ImprovTeam_1'] = data.ImprovTeams_1;
+      // ID1 = data.ImprovTeam_1.split('/')[4]
+      // myObj['ID_1'] = ID1
+      // myObj['CastName_2'] = data.CastName_2;
+      ID1 = data.ImprovTeams_1.split('/')[4];
+      ID2 = data.ImprovTeams_2.split('/')[4];
+      return {
+        ChainNumber: data.Chain,
+        ShowNumber: data.ShowNumber,
+        CastNumber: data.CastNumber,
+        Date:data.Date,
+        ShowCast:data.Show_Cast,
+        CastName_1: data.CastName_1,
+        ImprovTeam_1: data.ImprovTeams_1,
+        ID_1: ID1,
+        CastName_2: data.CastName_2,
+        ImprovTeam_2: data.ImprovTeams_2,
+        ID_2: ID2
+
+      }
+    }
+
+    , function(dataset){
+      data = dataset;
+     
+      var profile_wrap = d3.select("body")
+                        .append("div")
+                        .attr("id","wrapper")
+                        .selectAll("div")
+                        .data(data)
+                        .enter()
+                        .append("div")
+                        .attr("class","profile-wrapper")
+                        .attr("id", function(d){
+                          return d.ShowCast
+                        });
+      profile_wrap.append("div")
+                  .attr("class","show-info")
+                  .append("text")
+                  .text(function (d) {
+                    return d.Date;
+                  });
+
+      profile_wrap.append("div")
+                  .attr("class", "avatar_photo")
+                  .style("background-image", function (d){
+                    return "url(\'img/" + d.ID_1+".jpg\')" 
+                  })
+                  .append("div")
+                  .attr("class","cast_text")
+                  .append("text")
+                  .text(function (d){
+                    return d.CastName_1;
+                  });
+
+      profile_wrap.append("div")
+                  .attr("class", "avatar_photo")
+                  .style("background-image", function (d){
+                    return "url(\img/" + d.ID_2+".jpg\)" 
+                  })
+                  .append("div")
+                  .attr("class","cast_text")
+                  .append("text")
+                  .attr("class","cast_text")
+                  .text(function (d){
+                    return d.CastName_2;
+                  });
+
+
+    });
+
+
+
+
+
+    </script>
+  </body>
+  </html>
